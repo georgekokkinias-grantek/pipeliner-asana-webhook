@@ -80,8 +80,7 @@ async function handleNewOpportunity(data) {
         const project = await createAsanaProject({
             name: formatProjectName(data),
             notes: formatProjectNotes(data),
-            color: getProjectColor(data),
-            public: true // Set to false if you want private projects
+            color: getProjectColor(data)
         });
         
         if (project) {
@@ -212,7 +211,6 @@ async function createAsanaProject(projectData) {
                 color: projectData.color,
                 workspace: config.asana.workspaceId,
                 team: config.asana.teamId,  // Team is required for some workspaces
-                public: projectData.public !== false, // Default to public
                 default_view: 'list' // Can be 'list', 'board', 'timeline', 'calendar'
             }
         };
