@@ -13,7 +13,7 @@ const config = {
     asana: {
         accessToken: process.env.ASANA_ACCESS_TOKEN,
         workspaceId: process.env.ASANA_WORKSPACE_ID,
-        teamId: process.env.ASANA_TEAM_ID, // Optional - if you want projects in a specific team
+        teamId: process.env.ASANA_TEAM_ID, // Required for team-based workspaces
         templateProjectId: process.env.ASANA_TEMPLATE_PROJECT_ID // Optional - to copy from template
     },
     port: process.env.PORT || 10000
@@ -210,7 +210,6 @@ async function createAsanaProject(projectData) {
                 notes: projectData.notes,
                 color: projectData.color,
                 workspace: config.asana.workspaceId,
-                team: config.asana.teamId,  // Team is required for some workspaces
                 default_view: 'list' // Can be 'list', 'board', 'timeline', 'calendar'
             }
         };
@@ -567,13 +566,13 @@ app.listen(config.port, () => {
     console.log('Configuration status:');
     console.log(`  Asana Token: ${config.asana.accessToken ? '✓ Set' : '✗ Not set'}`);
     console.log(`  Workspace ID: ${config.asana.workspaceId ? '✓ Set' : '✗ Not set'}`);
-    console.log(`  Team ID: ${config.asana.teamId ? '✓ Set' : '○ Optional'}`);
+    console.log(`  Team ID: ${config.asana.teamId ? '✓ Set' : '✗ Not set'}`);
     console.log('');
     console.log('Project Creation Settings:');
     console.log('  • Creates new project for each opportunity');
     console.log('  • Adds standard project sections');
     console.log('  • Creates initial task templates');
-    console.log('  • Colors projects by value/client');
+    console.log('  • Colors projects by value');
     console.log('');
     console.log('Waiting for webhooks from Pipeliner...');
     console.log('========================================');
