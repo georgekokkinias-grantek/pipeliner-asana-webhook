@@ -186,14 +186,15 @@ function formatProjectNotes(data) {
 // Determine project color based on value or stage
 function getProjectColor(data) {
     // Color based on opportunity value
+    // Note: Asana requires hyphenated color names (light-blue, not light_blue)
     if (data.value) {
-        if (data.value > 100000) return 'red';        // High value
-        if (data.value > 50000) return 'orange';      // Medium-high value
-        if (data.value > 25000) return 'yellow';      // Medium value
-        return 'green';                                // Lower value
+        if (data.value > 100000) return 'dark-red';        // High value
+        if (data.value > 50000) return 'dark-orange';      // Medium-high value
+        if (data.value > 25000) return 'light-orange';     // Medium value
+        return 'light-green';                               // Lower value
     }
     
-    return 'light_blue'; // Default color
+    return 'light-blue'; // Default color (with hyphen!)
 }
 
 // Create Asana project
@@ -210,14 +211,17 @@ async function createAsanaProject(projectData) {
                 notes: projectData.notes,
                 color: projectData.color,
                 workspace: config.asana.workspaceId,
+                team: config.asana.teamId,  // Team is required for some workspaces
                 public: projectData.public !== false, // Default to public
                 default_view: 'list' // Can be 'list', 'board', 'timeline', 'calendar'
             }
         };
         
-        // Add to team if team ID is configured
+        // Add team if configured (required for some workspaces)
         if (config.asana.teamId) {
             asanaPayload.data.team = config.asana.teamId;
+        } else {
+            console.log('Warning: No team ID configured. This may cause errors in team-based workspaces.');
         }
         
         console.log('Creating Asana project:', projectData.name);
