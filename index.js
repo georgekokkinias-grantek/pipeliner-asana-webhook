@@ -130,6 +130,11 @@ function formatProjectName(data) {
     // Customize this based on your naming convention
     const parts = [];
     
+    // Add job number if available
+    if (data.jobNumber) {
+        parts.push(`[${data.jobNumber}]`);
+    }
+    
     // Add client name if available
     if (data.accountName) {
         parts.push(data.accountName);
@@ -142,7 +147,7 @@ function formatProjectName(data) {
     
     // Add value if significant
     if (data.value && data.value > 0) {
-        parts.push(`($${formatNumber(data.value)})`);
+        parts.push(`(${formatNumber(data.value)})`);
     }
     
     return parts.join(' - ') || 'New Opportunity';
@@ -154,11 +159,13 @@ function formatProjectNotes(data) {
     
     notes.push('=== PIPELINER OPPORTUNITY DETAILS ===\n');
     notes.push(`Pipeliner ID: ${data.id || 'N/A'}`);
+    notes.push(`Job Number: ${data.jobNumber || 'N/A'}`);
+    notes.push(`Job Status: ${data.jobStatus || 'N/A'}`);
     notes.push(`Opportunity Name: ${data.name || 'N/A'}`);
     notes.push(`Account: ${data.accountName || 'N/A'}`);
-    notes.push(`Value: $${formatNumber(data.value || 0)}`);
+    notes.push(`Value: ${formatNumber(data.value || 0)}`);
     notes.push(`Probability: ${data.probability || 0}%`);
-    notes.push(`Expected Revenue: $${formatNumber((data.value || 0) * (data.probability || 0) / 100)}`);
+    notes.push(`Expected Revenue: ${formatNumber((data.value || 0) * (data.probability || 0) / 100)}`);
     notes.push(`Stage: ${data.stage || 'N/A'}`);
     notes.push(`Close Date: ${data.closeDate || 'Not set'}`);
     notes.push(`Owner: ${data.ownerName || 'N/A'}`);
@@ -170,9 +177,12 @@ function formatProjectNotes(data) {
     
     notes.push(`\n=== DESCRIPTION ===\n${data.description || 'No description provided'}`);
     
-    // Add link back to Pipeliner if you know the URL structure
+    // Add links
+    notes.push(`\n=== LINKS ===`);
+    if (data.intranetJobUrl) {
+        notes.push(`Intranet Job URL: ${data.intranetJobUrl}`);
+    }
     if (data.id) {
-        notes.push(`\n=== LINKS ===`);
         notes.push(`View in Pipeliner: [Add your Pipeliner URL structure here]`);
     }
     
@@ -515,23 +525,17 @@ async function findProjectByOpportunityId(opportunityId) {
 app.post('/test', async (req, res) => {
     console.log('Test endpoint called');
     
-    // Sample test data
+    // Sample test data - simplified to match the 5 fields
     const testData = {
         entity: 'Opportunity',
         action: 'create',
         data: {
             id: `test-${Date.now()}`,
-            name: 'Equipment Upgrade Project',
-            accountName: 'Sample Company',
+            name: 'Test Project Name',
+            accountName: 'Test Client Company',
             value: 125000,
-            probability: 75,
-            stage: 'Proposal',
-            closeDate: '2025-06-30',
-            ownerName: 'John Smith',
-            description: 'Complete controls upgrade including new HMI, VFDs, and vision system integration.',
-            projectType: 'Control System Upgrade',
-            equipmentType: 'Production Line',
-            facility: 'Main Plant'
+            jobNumber: 'JOB-2025-001',
+            intranetJobUrl: 'https://intranet.grantek.com/job/2025-001'
         }
     };
     
