@@ -261,14 +261,10 @@ async function createAsanaProject(projectData) {
 // Create sections in the project (columns for board view)
 async function createProjectSections(projectGid) {
     const sections = [
-        '📋 Planning',
-        '🔧 Engineering',
-        '🏭 Manufacturing/Panel Build',
-        '🧪 FAT/Testing',
-        '🚚 Shipping',
-        '⚙️ Commissioning',
-        '✅ Complete',
-        '📚 Documentation'
+        '📋 Design & Planning',
+        '🔨 Build Stages',
+        '🧪 Testing',
+        '✅ Complete'
     ];
     
     for (const sectionName of sections) {
@@ -296,47 +292,76 @@ async function createProjectSections(projectGid) {
 async function createInitialTasks(projectGid, opportunityData) {
     console.log('Creating initial project tasks...');
     
-    // Define standard tasks for industrial automation projects
+    // Define tasks for panel shop workflow
     const tasks = [
+        // Design & Planning section
         {
-            name: '📊 Initial Opportunity Review',
-            notes: `Review opportunity details:\n- Value: $${formatNumber(opportunityData.value || 0)}\n- Probability: ${opportunityData.probability || 0}%\n- Close Date: ${opportunityData.closeDate || 'TBD'}`,
-            section: '📋 Planning'
+            name: 'Quote Delivered',
+            notes: 'Quote has been delivered to customer',
+            section: '📋 Design & Planning'
         },
         {
-            name: '📝 Prepare Proposal/Quote',
-            notes: 'Create detailed proposal including:\n- Scope of work\n- Timeline\n- Pricing\n- Terms and conditions',
-            section: '📋 Planning'
+            name: 'PO Received',
+            notes: 'Purchase Order received from customer',
+            section: '📋 Design & Planning'
         },
         {
-            name: '🏗️ Engineering Design',
-            notes: 'Complete engineering deliverables:\n- Control system architecture\n- I/O list\n- Network design\n- Panel layouts',
-            section: '🔧 Engineering'
+            name: 'Electrical Drawings',
+            notes: 'Complete electrical drawings and schematics',
+            section: '📋 Design & Planning'
         },
         {
-            name: '🔌 Panel Build',
-            notes: 'Manufacturing phase:\n- Order components\n- Build panels\n- Internal QC\n- Point-to-point checkout',
-            section: '🏭 Manufacturing/Panel Build'
+            name: 'Hardware Order Placed',
+            notes: 'All hardware and components ordered',
+            section: '📋 Design & Planning'
         },
         {
-            name: '🧪 Factory Acceptance Test (FAT)',
-            notes: 'FAT preparation and execution:\n- Prepare FAT procedure\n- Setup test environment\n- Execute FAT with customer\n- Address punch list items',
-            section: '🧪 FAT/Testing'
+            name: 'Hardware Received',
+            notes: 'All hardware and components received and verified',
+            section: '📋 Design & Planning'
+        },
+        // Build Stages section
+        {
+            name: 'Fabrication',
+            notes: 'Panel fabrication and metalwork complete',
+            section: '🔨 Build Stages'
         },
         {
-            name: '🚚 Shipping Coordination',
-            notes: 'Arrange delivery:\n- Schedule shipping\n- Prepare packing list\n- Coordinate site delivery\n- Track shipment',
-            section: '🚚 Shipping'
+            name: 'Assembly',
+            notes: 'Component assembly and mounting complete',
+            section: '🔨 Build Stages'
         },
         {
-            name: '⚙️ Site Commissioning',
-            notes: 'On-site work:\n- Installation supervision\n- Startup and commissioning\n- Operator training\n- Performance verification',
-            section: '⚙️ Commissioning'
+            name: 'Wiring',
+            notes: 'All wiring and terminations complete',
+            section: '🔨 Build Stages'
         },
         {
-            name: '📚 Documentation Package',
-            notes: 'Compile and deliver:\n- As-built drawings\n- Program backups\n- O&M manuals\n- Training materials',
-            section: '📚 Documentation'
+            name: 'Labeling/Documentation',
+            notes: 'All labels applied and documentation complete',
+            section: '🔨 Build Stages'
+        },
+        // Testing section
+        {
+            name: 'UL Certification (if applicable)',
+            notes: 'UL inspection and certification complete',
+            section: '🧪 Testing'
+        },
+        {
+            name: 'Crating',
+            notes: 'Panels crated and ready for shipment',
+            section: '🧪 Testing'
+        },
+        {
+            name: 'Shipping',
+            notes: 'Shipped to customer site',
+            section: '🧪 Testing'
+        },
+        // Complete section
+        {
+            name: 'Job Complete',
+            notes: 'Project delivered and closed',
+            section: '✅ Complete'
         }
     ];
     
