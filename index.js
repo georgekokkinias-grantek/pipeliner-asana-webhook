@@ -34,7 +34,7 @@ app.get('/health', (req, res) => {
 
 // Main webhook endpoint - receives data from Pipeliner
 app.post('/webhook/pipeliner', async (req, res) => {
-    console.log('=================================');
+    console.log('================================');
     console.log('Webhook received at:', new Date().toISOString());
     console.log('Data from Pipeliner:', JSON.stringify(req.body, null, 2));
     console.log('=================================');
